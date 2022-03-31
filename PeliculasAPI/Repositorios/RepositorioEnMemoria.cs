@@ -21,7 +21,8 @@ namespace PeliculasAPI.Repositorios
 
         public async Task<Genero> ObtenerPorId(int Id)//Task es como una Promesa
         {
-            await Task.Delay(TimeSpan.FromSeconds(3));//suspende la ejecución, libera el hilo actual para que pueda trabajar en otras cosas
+            await Task.Delay(1);//1 milisegundo
+            //suspende la ejecución, libera el hilo actual para que pueda trabajar en otras cosas
             return _generos.FirstOrDefault(x => x.Id == Id);//Va a obtener un género o un nulo
         }
     }
