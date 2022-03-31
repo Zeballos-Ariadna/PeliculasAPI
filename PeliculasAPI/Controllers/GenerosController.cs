@@ -5,7 +5,7 @@ using PeliculasAPI.Repositorios;
 namespace PeliculasAPI.Controllers
 {
     [Route("api/generos")]//Endpoint
-    public class GenerosController
+    public class GenerosController: ControllerBase
     {
         private readonly IRepositorio repositorio;
 
@@ -25,7 +25,7 @@ namespace PeliculasAPI.Controllers
         {
             var _genero = repositorio.ObtenerPorId(Id);
 
-            if (_genero == null) return new NotFoundResult();
+            if (_genero == null) return new NotFoundResult();//Retorna 404(No encontrada)
 
             return _genero;
         }
