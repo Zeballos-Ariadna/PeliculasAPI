@@ -21,11 +21,14 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{Id:int}")]
-        public ActionResult<Genero> Get(int Id)
+        public async Task<ActionResult<Genero>> Get(int Id)
         {
-            var _genero = repositorio.ObtenerPorId(Id);
+            var _genero = await repositorio.ObtenerPorId(Id);
 
-            if (_genero == null) return new NotFoundResult();//Retorna 404(No encontrada)
+            if (_genero == null)
+            {
+                return new NotFoundResult();//Retorna 404(No encontrada)
+            }
 
             return _genero;
         }

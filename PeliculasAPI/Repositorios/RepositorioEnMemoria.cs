@@ -19,8 +19,9 @@ namespace PeliculasAPI.Repositorios
             return _generos;
         }
 
-        public Genero ObtenerPorId(int Id)
+        public async Task<Genero> ObtenerPorId(int Id)//Task es como una Promesa
         {
+            await Task.Delay(TimeSpan.FromSeconds(3));//suspende la ejecución, libera el hilo actual para que pueda trabajar en otras cosas
             return _generos.FirstOrDefault(x => x.Id == Id);//Va a obtener un género o un nulo
         }
     }
