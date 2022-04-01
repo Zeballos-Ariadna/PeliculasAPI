@@ -15,7 +15,8 @@ namespace PeliculasAPI.Controllers
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IRepositorio repositorio;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IRepositorio repositorio)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, 
+            IRepositorio repositorio)
         {
             _logger = logger;
             this.repositorio = repositorio;
@@ -32,5 +33,12 @@ namespace PeliculasAPI.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("guid")]
+        public Guid ObtenerGUIDWeatherForecastController()
+        {
+            return repositorio.ObtenerGUID();
+        }
+
     }
 }

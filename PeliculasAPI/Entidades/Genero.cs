@@ -15,7 +15,7 @@ namespace PeliculasAPI.Entidades
         [Range(18,110)]
         public int Edad { get; set; }
 
-        [CreditCard]
+        [CreditCard]//Valida la tarjeta usando mod 10
         public string TarjetaDeCredito { get; set; }
 
         [Url]
