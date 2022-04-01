@@ -6,6 +6,7 @@ using PeliculasAPI.Repositorios;
 namespace PeliculasAPI.Controllers
 {
     [Route("api/generos")]//Endpoint
+    [ApiController]//Devuelve error si el modelo de la acción es inválida, indicando las razones del error
     public class GenerosController: ControllerBase
     {
         private readonly IRepositorio repositorio;
@@ -24,11 +25,7 @@ namespace PeliculasAPI.Controllers
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<Genero>> Get(int Id, [FromHeader] string nombre)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+            
             var _genero = await repositorio.ObtenerPorId(Id);
 
             if (_genero == null)
