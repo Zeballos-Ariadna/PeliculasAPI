@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Repositorios;
 
@@ -21,8 +22,13 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{Id:int}")]
-        public async Task<ActionResult<Genero>> Get(int Id)
+        public async Task<ActionResult<Genero>> Get(int Id, [FromHeader] string nombre)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var _genero = await repositorio.ObtenerPorId(Id);
 
             if (_genero == null)
@@ -34,14 +40,14 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost]
-        public void Post()
+        public ActionResult Post([FromBody] Genero genero)//FromBody importante para cuando trabajamos con la creación y actualizacion de registros
         {
-
+            return NoContent();
         }
         [HttpPut]
-        public void Put()
+        public ActionResult Put([FromBody] Genero genero)
         {
-
+            return NoContent();
         }
         [HttpDelete]
         public void Delete()
