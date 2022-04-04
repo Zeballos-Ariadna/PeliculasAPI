@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PeliculasAPI.Controllers;
+using PeliculasAPI.Filtros;
 using PeliculasAPI.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,10 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 
 //AddSingleton sirve para indicar que el tiempo de vida de la instancia del Sericio
 //va a ser durante todo el tiempo de ejecución de la aplicación
+
 builder.Services.AddScoped<IRepositorio, RepositorioEnMemoria>();
 builder.Services.AddScoped<WeatherForecastController>();
+builder.Services.AddTransient<MiFiltroDeAccion>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

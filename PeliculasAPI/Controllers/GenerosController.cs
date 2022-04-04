@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PeliculasAPI.Entidades;
+using PeliculasAPI.Filtros;
 using PeliculasAPI.Repositorios;
 
 namespace PeliculasAPI.Controllers
@@ -27,7 +28,7 @@ namespace PeliculasAPI.Controllers
 
         [HttpGet]// api/generos
         //[ResponseCache(Duration =60)]// duración del caché activado
-        
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
         public ActionResult<List<Genero>> Get()
         {
             logger.LogInformation("Vamos a mostrar los géneros");
