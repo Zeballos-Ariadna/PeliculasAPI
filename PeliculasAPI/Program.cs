@@ -32,11 +32,11 @@ var app = builder.Build();
 
 
 
-/*app.Use(async (context, next) =>//Puede interceptar las peticiones Http y guardar en un log las respuestas de las mismas
+app.Use(async (context, next) =>//Puede interceptar las peticiones Http y guardar en un log las respuestas de las mismas
 {
     using(var swapStream = new MemoryStream())//Hacemos una copia para guardar en el log
     {
-        //ILogger <Program> logger;//REVISAR!!
+        var logger = app.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
         var repuestaOriginal = context.Response.Body;
         context.Response.Body = swapStream;
         await next.Invoke();//Continua la ejecución del pipeline
@@ -48,7 +48,7 @@ var app = builder.Build();
 
         await swapStream.CopyToAsync(repuestaOriginal);
         context.Response.Body = repuestaOriginal;
-        //logger.LogInformation(respuesta); //REVISAR!!
+        logger.LogInformation(respuesta); 
     }
 });
 
@@ -58,7 +58,7 @@ app.Map("/mapa1", (app) =>
     {
         await context.Response.WriteAsync("Estoy interceptando el pipeline");
     });
-});*/
+});
 
 
 
