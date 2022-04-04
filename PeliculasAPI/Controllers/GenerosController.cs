@@ -54,6 +54,7 @@ namespace PeliculasAPI.Controllers
 
             if (_genero == null)
             {
+                throw new ApplicationException($"El género de ID {Id} no fue encontrado");
                 logger.LogWarning($"No pudimos encontrar el génedo de id: {Id}");
                 return new NotFoundResult();//Retorna 404(No encontrada)
             }

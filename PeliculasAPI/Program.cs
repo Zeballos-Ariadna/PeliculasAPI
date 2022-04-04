@@ -19,6 +19,10 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 builder.Services.AddScoped<IRepositorio, RepositorioEnMemoria>();
 builder.Services.AddScoped<WeatherForecastController>();
 builder.Services.AddTransient<MiFiltroDeAccion>();
+builder.Services.AddControllers(options => {
+    options.Filters.Add(typeof(FiltroDeExcepcion));    
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
