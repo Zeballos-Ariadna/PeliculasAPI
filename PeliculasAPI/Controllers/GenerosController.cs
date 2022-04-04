@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Repositorios;
@@ -7,6 +9,7 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/generos")]//Endpoint
     [ApiController]//Devuelve error si el modelo de la acción es inválida, indicando las razones del error
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]//Protege los endpoints del controlador de géneros
     public class GenerosController: ControllerBase
     {
         private readonly IRepositorio repositorio;
@@ -22,7 +25,9 @@ namespace PeliculasAPI.Controllers
             this.logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet]// api/generos
+        //[ResponseCache(Duration =60)]// duración del caché activado
+        
         public ActionResult<List<Genero>> Get()
         {
             logger.LogInformation("Vamos a mostrar los géneros");

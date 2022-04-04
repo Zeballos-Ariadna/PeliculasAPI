@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PeliculasAPI.Controllers;
 using PeliculasAPI.Repositorios;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //Transient es el tiempo más corto de vida que le podemos dar a un Servicio
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+builder.Services.AddResponseCaching();//permite acceso a los servic del sistema por defecto de caching
 //AddScoped es para tener configurado un Scope, el tiempo de vida de la clase instanciada
 //va a ser durante toda la petición HTTP
 
@@ -60,6 +63,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseResponseCaching();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
