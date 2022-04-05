@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
-using PeliculasAPI.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,7 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 //AddSingleton sirve para indicar que el tiempo de vida de la instancia del Sericio
 //va a ser durante todo el tiempo de ejecución de la aplicación
 
-builder.Services.AddScoped<IRepositorio, RepositorioEnMemoria>();
-builder.Services.AddScoped<WeatherForecastController>();
-builder.Services.AddTransient<MiFiltroDeAccion>();
+
 builder.Services.AddControllers(options => {
     options.Filters.Add(typeof(FiltroDeExcepcion));    
 });
@@ -32,33 +29,9 @@ var app = builder.Build();
 
 
 
-app.Use(async (context, next) =>//Puede interceptar las peticiones Http y guardar en un log las respuestas de las mismas
-{
-    using(var swapStream = new MemoryStream())//Hacemos una copia para guardar en el log
-    {
-        var logger = app.Services.GetService(typeof(ILogger<Program>)) as ILogger<Program>;
-        var repuestaOriginal = context.Response.Body;
-        context.Response.Body = swapStream;
-        await next.Invoke();//Continua la ejecución del pipeline
 
-        //En esta parte ya nos estan devolviendo una respuesta los Middlewares
-        swapStream.Seek(0, SeekOrigin.Begin);//Para llevar al principio
-        string respuesta=  new StreamReader(swapStream).ReadToEnd();//swapStream lo leemos hasta al final
-        swapStream.Seek(0, SeekOrigin.Begin);//Volvemos a colocar al inicio
 
-        await swapStream.CopyToAsync(repuestaOriginal);
-        context.Response.Body = repuestaOriginal;
-        logger.LogInformation(respuesta); 
-    }
-});
 
-app.Map("/mapa1", (app) =>
-{
-    app.Run(async context =>
-    {
-        await context.Response.WriteAsync("Estoy interceptando el pipeline");
-    });
-});
 
 
 
@@ -70,8 +43,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseResponseCaching();
 
 app.UseAuthentication();
 
