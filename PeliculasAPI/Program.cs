@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using PeliculasAPI;
 using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 //Transient es el tiempo más corto de vida que le podemos dar a un Servicio
@@ -29,6 +32,13 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
     });
 });
+
+
+//BD
+var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

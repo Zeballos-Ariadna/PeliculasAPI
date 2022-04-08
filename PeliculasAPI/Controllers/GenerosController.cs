@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Filtros;
 
@@ -13,20 +14,20 @@ namespace PeliculasAPI.Controllers
     public class GenerosController: ControllerBase
     {
         private readonly ILogger<GenerosController> logger;
+        private readonly ApplicationDbContext context;
 
         public GenerosController(
-            ILogger<GenerosController> logger)
+            ILogger<GenerosController> logger,
+            ApplicationDbContext context)
         {
             this.logger = logger;
+            this.context = context;
         }
 
         [HttpGet]// api/generos
-        public ActionResult<List<Genero>> Get()
+        public async Task<ActionResult<List<Genero>>> Get()
         {
-            return new List<Genero>()
-            {
-                new Genero() { Id = 1, Nombre = "Comedia"}
-            };
+            return await context.Generos.ToListAsync();
         }
 
        
@@ -38,9 +39,11 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Genero genero)//FromBody importante para cuando trabajamos con la creación y actualizacion de registros
+        public async Task<ActionResult> Post([FromBody] Genero genero)//FromBody importante para cuando trabajamos con la creación y actualizacion de registros
         {
-            throw new NotImplementedException();
+            context.Generos.Add(genero);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
         [HttpPut]
         public ActionResult Put([FromBody] Genero genero)
