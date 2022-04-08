@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using PeliculasAPI;
+using PeliculasAPI.ApiBehavior;
 using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
 using System.Configuration;
@@ -20,9 +21,11 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 //va a ser durante todo el tiempo de ejecución de la aplicación
 
 
-builder.Services.AddControllers(options => {
-    options.Filters.Add(typeof(FiltroDeExcepcion));    
-});
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(typeof(FiltroDeExcepcion));
+    options.Filters.Add(typeof(ParsearBadRequest));
+}).ConfigureApiBehaviorOptions(BehaviorBadRequests.Parsear);
 
 builder.Services.AddCors(options =>
 {
