@@ -1,13 +1,11 @@
 ﻿using PeliculasAPI.Validaciones;
 using System.ComponentModel.DataAnnotations;
 
-namespace PeliculasAPI.Entidades
+namespace PeliculasAPI.DTOs
 {
-    public class Genero
+    public class GeneroCreacionDTO
     {
-        public int Id { get; set; }
-
-        [Required (ErrorMessage ="El campo {0} es requerido")]//El campo nombre es obligatorio
+        [Required(ErrorMessage = "El campo {0} es requerido")]//El campo nombre es obligatorio
         [StringLength(maximumLength: 50)]
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }

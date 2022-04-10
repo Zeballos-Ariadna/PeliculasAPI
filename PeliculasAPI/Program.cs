@@ -20,6 +20,7 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 //AddSingleton sirve para indicar que el tiempo de vida de la instancia del Sericio
 //va a ser durante todo el tiempo de ejecución de la aplicación
 
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers(options =>
 {
