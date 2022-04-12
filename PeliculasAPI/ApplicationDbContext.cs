@@ -11,5 +11,9 @@ namespace PeliculasAPI
         }
 
         public DbSet<Genero> Generos {get; set;}//Nombre de la tabla Generos
+    
+        public DbSet<Actor> Actores {get; set;}
+
+
     }
 }
