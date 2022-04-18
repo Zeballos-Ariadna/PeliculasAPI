@@ -62,6 +62,7 @@ namespace PeliculasAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] GeneroCreacionDTO generoCreacionDTO)
         {
@@ -76,6 +77,7 @@ namespace PeliculasAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
+
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
