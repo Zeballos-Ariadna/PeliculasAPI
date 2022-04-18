@@ -1,9 +1,13 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using PeliculasAPI;
 using PeliculasAPI.ApiBehavior;
 using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
+using PeliculasAPI.Utilidades;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +24,21 @@ builder.Services.AddResponseCaching();//permite acceso a los servic del sistema 
 //AddSingleton sirve para indicar que el tiempo de vida de la instancia del Sericio
 //va a ser durante todo el tiempo de ejecución de la aplicación
 
+//Configuración de AUTOMAPPER
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSingleton(provider =>
+    new MapperConfiguration(config =>
+    {
+        var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+        config.AddProfile(new AutoMapperProfiles(geometryFactory));
+    }).CreateMapper()
+);
+//Permite medir distancias utilizando NetTopologySuite
+builder.Services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
+
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocales>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers(options =>
 {
@@ -42,7 +60,11 @@ builder.Services.AddCors(options =>
 //BD
 var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+options.UseSqlServer(connectionString, sqlServer => sqlServer.UseNetTopologySuite()));
+
+
+
 
 
 builder.Services.AddControllers();
@@ -61,6 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 

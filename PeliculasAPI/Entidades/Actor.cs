@@ -5,7 +5,7 @@ namespace PeliculasAPI.Entidades
     public class Actor
     {
         public int Id { get; set; }
-        [Required]
+        //[Required]
         [StringLength(maximumLength: 200)]
         public string Nombre { get; set; }
         public string Biografia { get; set; }

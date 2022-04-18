@@ -14,6 +14,6 @@ namespace PeliculasAPI
     
         public DbSet<Actor> Actores {get; set;}
 
-
+        public DbSet<Cine> Cines { get; set; }
     }
 }
