@@ -24,20 +24,7 @@ namespace PeliculasAPI.Controllers
             this.almacenadorArchivos = almacenadorArchivos;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Post([FromQuery] PeliculaCreacionDTO peliculaCreacionDTO)
-        {
-            var pelicula = mapper.Map<Pelicula>(peliculaCreacionDTO);
-            
-            if (peliculaCreacionDTO.Poster != null)
-            {
-                pelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenedor, peliculaCreacionDTO.Poster);
-            }
-
-            EscribirOrdenActores(pelicula);
-            await context.SaveChangesAsync();
-            return NoContent();
-        }
+        
 
         [HttpGet("PostGet")]//método Get que prepara la app para realizar un Post más adelante
         public async Task<ActionResult<PeliculasPostGetDTO>> PostGet()
@@ -49,6 +36,21 @@ namespace PeliculasAPI.Controllers
             var generosDTO = mapper.Map<List<GeneroDTO>>(generos);
 
             return new PeliculasPostGetDTO() { Cines = cinesDTO, Generos = generosDTO };
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromQuery] PeliculaCreacionDTO peliculaCreacionDTO)
+        {
+            var pelicula = mapper.Map<Pelicula>(peliculaCreacionDTO);
+
+            if (peliculaCreacionDTO.Poster != null)
+            {
+                pelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenedor, peliculaCreacionDTO.Poster);
+            }
+
+            EscribirOrdenActores(pelicula);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         private void EscribirOrdenActores(Pelicula pelicula)

@@ -34,6 +34,22 @@ namespace PeliculasAPI.Controllers
             return mapper.Map<List<ActorDTO>>(actores);
         }
 
+        [HttpGet("buscarPorNombre/{nombre}")]
+        public async Task<ActionResult<List<PeliculasActoresDTO>>> BuscarPorNombre(string nombre="")
+        {
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                return new List<PeliculasActoresDTO>();
+            }
+
+            return await context.Actores
+                .Where(x => x.Nombre.Contains(nombre))
+                .OrderBy(x => x.Nombre)
+                .Select(x => new PeliculasActoresDTO { Id = x.Id, Nombre = x.Nombre, Foto = x.Foto})
+                .Take(5)//Tomamos 5 actores para mostrar
+                .ToListAsync();  
+        }  
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ActorDTO>> Get(int id)
         {

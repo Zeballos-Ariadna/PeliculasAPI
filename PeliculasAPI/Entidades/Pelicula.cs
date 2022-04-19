@@ -5,7 +5,7 @@ namespace PeliculasAPI.Entidades
     public class Pelicula
     {
         public int Id { get; set; }
-        [Required]
+        //[Required]
         [StringLength(maximumLength:300)]
         public string Titulo { get; set; }
         public string Resumen { get; set; }

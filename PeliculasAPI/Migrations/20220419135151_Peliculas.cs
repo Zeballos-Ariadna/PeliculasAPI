@@ -16,11 +16,11 @@ namespace PeliculasAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Resumen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Trailer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Resumen = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Trailer = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EnCines = table.Column<bool>(type: "bit", nullable: false),
                     FechaLanzamiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Poster = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Poster = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace PeliculasAPI.Migrations
                 {
                     PeliculaId = table.Column<int>(type: "int", nullable: false),
                     ActorId = table.Column<int>(type: "int", nullable: false),
-                    Personaje = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Personaje = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Orden = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

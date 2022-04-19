@@ -13,7 +13,7 @@ using PeliculasAPI;
 namespace PeliculasAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220418213035_Peliculas")]
+    [Migration("20220419135151_Peliculas")]
     partial class Peliculas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
