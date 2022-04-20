@@ -73,7 +73,6 @@ namespace PeliculasAPI.Controllers
                 actor.Foto = await almacenadorArchivos.GuardarArchivo(contenedor, actorCreacionDTO.Foto);
             }
 
-            context.Add(actor);
 
             context.Add(actor);
             await context.SaveChangesAsync();
