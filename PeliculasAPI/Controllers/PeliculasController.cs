@@ -38,6 +38,24 @@ namespace PeliculasAPI.Controllers
             return new PeliculasPostGetDTO() { Cines = cinesDTO, Generos = generosDTO };
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<PeliculaDTO>> Get(int id)
+        {
+            var pelicula = await context.Peliculas
+                .Include(x => x.PeliculasGeneros)//incluye PeliculasGeneros
+                .ThenInclude(x => x.Genero)//incluye Genero que viene de PelGeneros
+                .Include(x => x.PeliculasActores).ThenInclude(x => x.Actor)
+                .Include(x => x.PeliculasCines).ThenInclude(x => x.Cine)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            //Incluye la data que viene en PeliculasGeneros 
+
+            if(pelicula == null) { return NotFound(); }
+
+            var dto = mapper.Map<PeliculaDTO>(pelicula);
+            dto.Actores = dto.Actores.OrderBy(x => x.Orden).ToList();
+            return dto;
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
         {
