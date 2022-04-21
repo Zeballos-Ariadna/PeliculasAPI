@@ -172,5 +172,24 @@ namespace PeliculasAPI.Controllers
                 }
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var pelicula = await context.Peliculas.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (pelicula != null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(pelicula);
+            await context.SaveChangesAsync();
+            await almacenadorArchivos.BorrarArchivo(pelicula.Poster, contenedor);
+            return NoContent();
+
+
+        }
+
     }
 }
