@@ -1,6 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using PeliculasAPI;
@@ -9,6 +11,7 @@ using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
 using PeliculasAPI.Utilidades;
 using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //Transient es el tiempo más corto de vida que le podemos dar a un Servicio
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddResponseCaching();//permite acceso a los servic del sistema por defecto de caching
 //AddScoped es para tener configurado un Scope, el tiempo de vida de la clase instanciada
 //va a ser durante toda la petición HTTP
@@ -55,6 +57,26 @@ builder.Services.AddCors(options =>
         .WithExposedHeaders(new string[] { "cantidadTotalRegistros" });
     });
 });
+
+
+//Indentity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+//Servicio de Autenticacion
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opciones =>
+    opciones.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,//Tiempo de expiracion del Token
+        ValidateIssuerSigningKey= true,//firma con llave privada
+        IssuerSigningKey= new SymmetricSecurityKey(//config firma con una llave
+            Encoding.UTF8.GetBytes(builder.Configuration["llavejwt"])),
+        ClockSkew = TimeSpan.Zero//para no tener problemas de diferencias de tiempo,si el token venció
+    });
 
 
 //BD
