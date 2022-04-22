@@ -161,6 +161,8 @@ namespace PeliculasAPI.Controllers
             }
 
             EscribirOrdenActores(pelicula);
+
+            context.Add(pelicula);
             await context.SaveChangesAsync();
             return NoContent();
         }
