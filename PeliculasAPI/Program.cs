@@ -11,10 +11,11 @@ using PeliculasAPI.Controllers;
 using PeliculasAPI.Filtros;
 using PeliculasAPI.Utilidades;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();//--> REVISAR
 
 // Add services to the container.
 //Transient es el tiempo más corto de vida que le podemos dar a un Servicio
@@ -78,6 +79,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ClockSkew = TimeSpan.Zero//para no tener problemas de diferencias de tiempo,si el token venció
     });
 
+//builder.Services.JwtSecurityTokenHandler
 
 //BD
 var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
@@ -86,13 +88,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(connectionString, sqlServer => sqlServer.UseNetTopologySuite()));
 
 
-
-
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
