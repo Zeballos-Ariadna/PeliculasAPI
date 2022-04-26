@@ -13,6 +13,7 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/generos")]//Endpoint
     [ApiController]//Devuelve error si el modelo de la acción es inválida, indicando las razones del error
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]//Protege los endpoints del controlador de géneros
     public class GenerosController : ControllerBase
     {
@@ -55,6 +56,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("todos")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<GeneroDTO>>> Todos()
         {
             var generos = await context.Generos.OrderBy(x => x.Nombre).ToListAsync();

@@ -43,6 +43,12 @@ builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocales>(
 
 builder.Services.AddHttpContextAccessor();
 
+//Autorizacion basada en claims
+builder.Services.AddAuthorization(opciones =>
+{
+    opciones.AddPolicy("EsAdmin", policy => policy.RequireClaim("roles", "admin"));
+});
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(FiltroDeExcepcion));
@@ -78,8 +84,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             Encoding.UTF8.GetBytes(builder.Configuration["llavejwt"])),
         ClockSkew = TimeSpan.Zero//para no tener problemas de diferencias de tiempo,si el token venció
     });
-
-//builder.Services.JwtSecurityTokenHandler
 
 //BD
 var connectionString = builder.Configuration.GetConnectionString("defaultConnection");
