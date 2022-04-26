@@ -15,7 +15,7 @@ namespace PeliculasAPI.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly ApplicationDbContext context;
 
-        public RatingsController(UserManager<IdentityUser> userManager
+        public RatingsController(UserManager<IdentityUser> userManager,
             ApplicationDbContext context)
         {
             this.userManager = userManager;
