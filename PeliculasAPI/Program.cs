@@ -46,7 +46,7 @@ builder.Services.AddHttpContextAccessor();
 //Autorizacion basada en claims
 builder.Services.AddAuthorization(opciones =>
 {
-    opciones.AddPolicy("EsAdmin", policy => policy.RequireClaim("roles", "admin"));
+    opciones.AddPolicy("EsAdmin", policy => policy.RequireClaim("role", "admin"));
 });
 
 builder.Services.AddControllers(options =>
@@ -57,7 +57,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddCors(options =>
 {
-    var frontendURL = builder.Configuration.GetValue<string>("frontend_url");//revisar si funciona
+    var frontendURL = builder.Configuration.GetValue<string>("frontend_url");
     options.AddDefaultPolicy(builder =>
     {
         builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader()
